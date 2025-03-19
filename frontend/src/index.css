@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@plugin "daisyui"{
+  themes: light --default, dark --prefersdark, emerald;
+}
+
+@theme {
+  --color-bspgreen: #1C9F35;
+  --color-accentgreen: #427E4E;
+  --color-darkgreen: #044F12;
+  --color-darkred: #A50003;
+}
