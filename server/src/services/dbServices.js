@@ -27,7 +27,7 @@ export const getAllData = async () => {
 export const getVoters = async () => {
   try {
     const sql = `SELECT user_id, voter_name, has_voted, user_email, region FROM votes
-                JOIN users ON votes.voter_id = users.user_id ORDER BY voter_name ASC`
+                JOIN users ON votes.vote_id = users.user_id ORDER BY voter_name ASC`
     const { rows } = await query(sql, [])
     return rows
   } catch (error) {
@@ -74,7 +74,7 @@ export const viewCandidates = async () => {
 
 export const passBallot = async (vote_1, vote_2, vote_3, vote_4, hasVoted, stubNum, uid) => {
   try {
-    const sql = `UPDATE votes SET vote_1 = $1, vote_2 = $2, vote_3 = $3, vote_4 = $4, has_voted = $5, stub_number = $6 WHERE voter_id = $7 RETURNING *`
+    const sql = `UPDATE votes SET vote_1 = $1, vote_2 = $2, vote_3 = $3, vote_4 = $4, has_voted = $5, stub_number = $6 WHERE vote_id = $7 RETURNING *`
     const { rows } = await query(sql, [vote_1, vote_2, vote_3, vote_4, hasVoted, stubNum, uid])
     return rows
   } catch (error) {
@@ -86,7 +86,7 @@ export const passBallot = async (vote_1, vote_2, vote_3, vote_4, hasVoted, stubN
 export const hasVoted = async (uid) => {
   try {
     const sql = `SELECT has_voted FROM votes
-                WHERE voter_id = $1`
+                WHERE vote_id = $1`
     const { rows } = await query(sql, [uid])
     return rows
   } catch (error) {
@@ -99,7 +99,7 @@ export const resetVote = async (uid) => {
   try {
     const sql = `UPDATE votes SET has_voted = 'false',
                 vote_1 = null, vote_2 = null, vote_3 = null, vote_4 = null
-                WHERE voter_id = $1`
+                WHERE vote_id = $1`
     const { rows } = await query(sql, [uid])
     return rows
   } catch (error) {
@@ -148,7 +148,7 @@ export const getTop4 = async () => {
 export const getVotesBy = async (uid) => {
   try {
     const sql = `SELECT vote_1, vote_2, vote_3, vote_4 FROM votes
-                WHERE voter_id = $1`
+                WHERE vote_id = $1`
     const { rows } = await query(sql, [uid])
     return rows
   } catch (error) {
@@ -183,7 +183,7 @@ export const votersByRegion = async () => {
   try {
     const sql = `SELECT users.region, COUNT(votes.vote_uuid)::INTEGER AS total_votes
                 FROM votes 
-                JOIN users ON votes.voter_id = users.user_id 
+                JOIN users ON votes.vote_id = users.user_id 
                 GROUP BY users.region`
     const { rows } = await query(sql, [])
     return rows
@@ -246,7 +246,7 @@ export const searchVoter = async(searchTerm) => {
   try {
     const {rows} = await query(
       `SELECT user_id, voter_name, has_voted, user_email, region FROM votes
-      JOIN users ON votes.voter_id = users.user_id 
+      JOIN users ON votes.vote_id = users.user_id 
       WHERE voter_name ILIKE $1 OR user_email ILIKE $1 ORDER BY region ASC`,
       [`%${searchTerm}%`])
     return rows
@@ -277,7 +277,7 @@ export const getVote = async(uid) => {
               votes.vote_2 = candidates.candidate_name OR
               votes.vote_3 = candidates.candidate_name OR
               votes.vote_4 = candidates.candidate_name  
-              WHERE voter_id = $1`
+              WHERE vote_id = $1`
     const { rows } = await query(sql, [uid])
     return rows
   } catch (error) {
@@ -290,7 +290,7 @@ export const stubNum = async(uid) => {
   try {
     const sql = `SELECT stub_number, region FROM votes
                 JOIN users ON votes.voter_name = users.user_name  
-                WHERE voter_id = $1`
+                WHERE vote_id = $1`
     const { rows } = await query(sql, [uid])
     return rows
   } catch (error) {
@@ -327,7 +327,7 @@ export const getStatsByRegion = async () => {
     const sql = `SELECT region, 
                 COUNT(user_id) AS registered_voters, 
                 SUM(has_voted::int) AS votes_cast
-                FROM users JOIN votes ON votes.voter_id = users.user_id
+                FROM users JOIN votes ON votes.vote_id = users.user_id
                 WHERE user_role = 'Voting Delegate' GROUP BY region`
     const { rows } = await query(sql, [])
     return rows
