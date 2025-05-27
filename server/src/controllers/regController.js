@@ -26,7 +26,7 @@ export const regUser = async (req, res) => {
 
     if (role === "Voting Delegate"){
       try {
-        const voter = await regServices.addVoter(name, uid, 0)
+        const voter = await regServices.addVoter(name, uid, null)
       } catch (error) {
         return res.status(500).json({message: "Error Adding Voter", error: error.message})
       }

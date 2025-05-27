@@ -51,7 +51,7 @@ export const changePassword = async (password, id) => {
 
 export const addVoter = async (name, user_id, stub_num) => {
   try {
-    const sql = `INSERT INTO votes (voter_name, voter_id, stub_number) 
+    const sql = `INSERT INTO votes (voter_name, vote_id, stub_number) 
                 VALUES ($1, $2, $3) RETURNING *`
     const { rows } = await query(sql, [name, user_id, stub_num])
     return rows

@@ -69,6 +69,13 @@ export const passBallot = async (req, res) => {
     const vote_3 = req.body[2]
     const vote_4 = req.body[3]
     const stub_number = req.body[req.body.length - 1]
+    console.log("Received votes:");
+    console.log("Vote 1:", vote_1);
+    console.log("Vote 2:", vote_2);
+    console.log("Vote 3:", vote_3);
+    console.log("Vote 4:", vote_4);
+    console.log("Stub Number:", stub_number);
+    console.log("User:", req.user);
     const result = await dbServices.passBallot(vote_1, vote_2, vote_3, vote_4, true, stub_number, req.user)
     for (let x = 0; x <= 3; x++){
       if(req.body[x] === undefined) continue
@@ -86,7 +93,7 @@ export const passBallot = async (req, res) => {
 }
 
 export const hasVoted = async (req, res) => {
-  try {
+  try { 
     const result = await dbServices.hasVoted(req.user)
     return res.status(200).json({voteStatus: result})
   } catch (error) {

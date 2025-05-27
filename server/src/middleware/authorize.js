@@ -14,6 +14,8 @@ const authorize = async (req, res, next) => {
     const payload = jwt.verify(jwtToken, process.env.jwtSecret)
 
     req.user = payload.user
+    console.log("Authorized user ID (UUID):", payload.user);
+
 
     next()
 

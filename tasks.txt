@@ -1,0 +1,85 @@
+Feature to be Added
+Login Page:
+  - Enter Credentials
+	⚀ Add forgot pass modal, but check the existing project if there is an existing card/modal for that.
+
+
+
+Election Committee Side:
+  - Voting Statistics
+	⚀ Add time in the date
+
+  - Election Results
+	⚀ Download PDF Function/Button
+	⚀ Add time in the date
+
+
+
+Admin Side:
+  - System Settings
+	⚀ Add other Region in "Region" dropdown
+
+  - Candidate Management
+	⚀ Add other Region in "Region" dropdown
+
+
+
+E-Ballot Form
+  - BUGG: when searchin
+
+
+Note:
+Add confirm logout across all users!
+
+
+
+
+
+
+Feature to be Revised:
+Admin Side:
+   -Dashboard:
+	⚀ Adjust size to accommodate whole screen, to overflow/scroll remove
+
+   - Voting Statistics
+	⚀ Edit the votes cast per council, use pie chart to visualize data and hide other data — Registered Voters, Votes Cast, and Turnout %
+	⚀ Remove leading candidates card replace with voter ballot - list of voters with action to reset its voting ballot and have a search feature
+
+   - Voter Management
+	⚀ Edit the action button to be reset password and delete account
+	⚀ Adjust the width of the column of the email as well as the Name (Make the name one liner only)
+	⚀ Edit the "Reset Vote" Column to action then change it to triple bar to indicate Edit Data (a Modal). Include in the modal the remove voter function and reset Vote.
+	⚀ Adjust the height of date div rectangle
+
+   - Candidate Management
+	⚀ Adjust the width of candidate name, size of space(padding/margin) of photo
+	⚀ Edit the "Remove Candidate" Column to action then change it to triple bar to indicate Edit Data (a Modal). Include in the modal the remove candidate function.
+	⚀ Adjust the height of date div rectangle
+
+   - Election Results
+	⚀ Remove this section
+
+   - System Settings
+	⚀ Exclude in query "Voting Delegate"
+	⚀ Same with CM and VM action for edit data
+
+
+
+
+Election Committee Side:
+   - Dashboard
+	⚀ Adjust the size to accommodate whole screen to remove overflowing and scroll
+
+   - Candidate List
+	⚀ Adjust the height of div rectangle of date it is much larger in height that other pages
+
+
+
+Voter Side:
+  - e-Ballot Form
+	⚀ Remove the search function
+	⚀ Stick to the figma design 
+
+Note:
+Change the hex color of submit button in modal:
+	green(#044F12)

@@ -87,8 +87,16 @@ function Voting({setAuth}) {
   const postBallot = async () => {
     try {
       const ballotNames = getBallotNames()
-      const stubNumber = Math. floor(Math. random() * (9999 - 1000 + 1)) + 1000
-      ballotNames.push(stubNumber)
+      const stubNumber = Math.floor(Math. random() * (9999 - 1000 + 1)) + 1000
+      const timePart = Date.now().toString().slice(-4);
+      var stubNo = stubNumber.toString();
+      console.log(stubNo);
+      console.log(timePart);
+      var newStubNumber = parseInt(stubNo + timePart);
+      ballotNames.push(newStubNumber)
+       //DEBUG LOGS
+      console.log("🟢 Ballot being sent:", ballotNames);
+      console.log("📌 Token in header:", localStorage.getItem("token"));
       const response = await axios.put(`http://localhost:5000/ballot`, ballotNames,
         {headers:{
           token: localStorage.getItem("token")
@@ -181,7 +189,7 @@ function Voting({setAuth}) {
     const newData = []
     Object.keys(ballotData).forEach((key) => {
       const votes = ballotData[key]
-      
+      console.log("🔍 votes object:", votes)
       newData.push(votes.name)
     })
 

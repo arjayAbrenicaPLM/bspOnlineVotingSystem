@@ -1,0 +1,78 @@
+Error -- from the server side cmd:
+invalid input syntax for type uuid: "Neal Belles"
+page occurred: voting.jsx
+route: /ballot
+
+first response:
+	browser's console log error:
+           PUT http://localhost:5000/ballot 500 (Internal Server Error)
+	snippet of code in voting.jsx:
+		const response = await axios.put(`http://localhost:5000/ballot`, ballotNames,
+        	   {headers:{
+          	      token: localStorage.getItem("token")
+        	   }}
+      		)
+	
+	examine:
+		ballotNames being send and attaches token for authentication purposes
+		ballotNames contains:
+		['Neal Belles', 'James Garcia', 'Allex Pascual', 'Miguel Jose', 4126]
+
+second response:
+	look for route (/ballot) in dbRoute.jsx
+	...
+	router.put('/ballot', authorize, dbController.passBallot)
+	...
+	this points to the function(?) passBallot in dbController.jsx
+	
+	dbController.jsx
+	export const passBallot = async (req, res) => {
+  	   try{
+    	   const vote_1 = req.body[0]
+    	   const vote_2 = req.body[1]
+    	   const vote_3 = req.body[2]
+    	   const vote_4 = req.body[3]
+    	   const stub_number = req.body[req.body.length - 1]
+    	   const result = await dbServices.passBallot(vote_1, vote_2, vote_3, vote_4, true, stub_number, req.user)
+    	   for (let x = 0; x <= 3; x++){
+      	      if(req.body[x] === undefined) continue
+
+      	      const data = await dbServices.getTotalVotes(req.body[x])
+      	      let voteCount = data[0].total_votes
+      	      voteCount += 1
+
+      	      const addVote = await dbServices.updateTotalVotes(voteCount, req.body[x])
+    	   }
+    	   return res.status(200).json({candidates: result})
+  	} catch (error){
+    	  return res.status(500).json({message: "Server Error", error: error.message})
+  	}
+   }
+
+Solution:
+changed the data type of the vote_1 to vote_4 into text not uuid
+
+
+-----------------------------------------------------------------------------------------------------
+
+Error -- from the browser's console:
+duplicate key value violates unique constraint "votes_stub_number_key
+Settings.jsx:56:
+	POST http://localhost:5000/auth/register 500 (Internal Server Error)
+	handleSubmitUser	@	Settings.jsx:56
+	onClick	@	AddUserModal.jsx:53
+
+Solution:
+
+if (role === "Voting Delegate"){
+      try {
+        const voter = await regServices.addVoter(name, uid, null)
+      } catch (error) {
+        return res.status(500).json({message: "Error Adding Voter", error: error.message})
+      }
+    }
+
+changed the: regServices.addVoter(name, uid, 0)
+into: regServices.addVoter(name, uid, null)
+
+------------------------------------------------------------------------------------------------------

@@ -17,6 +17,8 @@ function Marshall({setAuth}) {
   const [voters1Data, setVoters1Data] = useState(null)
   const [voters2Data, setVoters2Data] = useState(null)
   const [totalVoters, setTotalVoters] = useState()
+  const [currentTime, setCurrentTime] = useState(new Date());
+
 
   const getTop4 = async () => {
     try {
@@ -106,6 +108,13 @@ function Marshall({setAuth}) {
   }
 
   useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
     getTop4()
     getCandidatesByRegion()
     getTotalCandidates()
@@ -121,7 +130,13 @@ function Marshall({setAuth}) {
         {/* Role & Clock */}
         <div>
           <h1 className='text-green-900 font-bold text-2xl'>{role === "ADMIN" ? "SYSTEM ADMINISTRATOR" : role}</h1>
-          <div className='bg-green-900 font-bold rounded-md w-fit text-white p-1 px-2 flex items-center gap-2'><FaCalendar />12 March 2025</div>
+          <div className='bg-green-900 font-bold rounded-md w-fit text-white p-1 px-2 flex items-center gap-2'><FaCalendar />
+            {currentTime.toLocaleDateString(undefined, {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric'
+            })}
+          </div>
         </div>
 
         {/* Voting Stats */}
@@ -144,7 +159,9 @@ function Marshall({setAuth}) {
                   <div className="divider divider-horizontal before:bg-accentgreen/50 before:rounded-t-md after:bg-accentgreen/50 after:rounded-b-md"/>
                   <div className="w-1/2 p-1">
                     <h1 className='text-accentgreen font-bold'>AS OF</h1>
-                    <h1 className='text-darkgreen self-end font-bold text-5xl'>11: 30 AM</h1>
+                    <h1 className='text-darkgreen self-end font-bold text-5xl'>
+                      {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </h1>
                   </div>
                 </div>
               </div>
